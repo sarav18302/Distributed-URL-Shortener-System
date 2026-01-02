@@ -55,6 +55,33 @@ A production-ready URL shortening service demonstrating distributed systems conc
    - CORS configuration
    - Graceful shutdown handling
 
+## Data Flow
+
+The application follows a structured data flow between the user interface, backend, cache, and database. The following sequence diagram illustrates the key interactions in the system:
+
+```mermaid
+sequenceDiagram
+participant User
+participant ReactApp
+participant FastAPI
+participant LRUCACHE
+participant MongoDB
+User ->>ReactApp: Submit URL for shortening
+ReactApp ->>FastAPI: POST /api/shorten
+FastAPI->>LRUCACHE: Check for existing short code
+LRUCACHE -->>FastAPI: Cache miss
+FastAPI ->>MongoDB: Save new short URL
+MongoDB -->>FastAPI: Save confirmation
+FastAPI ->>LRUCACHE: Update cache with new short code
+FastAPI -->>ReactApp: Return shortened URL
+User ->>ReactApp: Access short URL
+ReactApp ->>FastAPI: GET /api/expand/{short_code}
+FastAPI->>LRUCACHE: Check cache for original URL
+LRUCACHE -->>FastAPI: Cache hit
+FastAPI -->>ReactApp: Redirect to original URL
+```
+
+
 ## 🚀 Tech Stack
 
 - **Backend**: FastAPI (Python) - High-performance async web framework
