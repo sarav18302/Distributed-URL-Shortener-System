@@ -3,7 +3,6 @@
 A production-ready URL shortening service demonstrating distributed systems concepts, caching strategies, and scalable architecture.
 
 ## 🏗️ System Architecture
-## 🔍 Architecture Deep Dive
 
 ```
 ┌─────────────┐      ┌──────────────┐      ┌─────────────┐
